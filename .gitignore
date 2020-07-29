@@ -1,0 +1,6 @@
+.drake/
+.Rhistory
+.Rproj.user
+source_data/*
+processed_data/*
+**/*.RData

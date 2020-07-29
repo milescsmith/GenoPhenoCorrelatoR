@@ -1,0 +1,131 @@
+---
+title: "Genotype-phenotype correlation"
+author: "Miles Smith"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+---
+
+```{css, echo=FALSE}
+    body .main-container {
+      max-width: 1500px !important;
+      width: 1500px !important;
+    }
+    body {
+      max-width: 1500px !important;
+    }
+    caption {
+      color: black;
+      font-weight: bold;
+      font-size: 1.0em;
+    }
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+theme_set(theme_cowplot())
+loadd(snp_flow_combinations_with_cor_pval_pos)
+```
+
+```{r }
+snp_flow_combinations_with_cor_pval_pos %>%
+    filter(correlation > 0.01) %>%
+    ggplot(
+        aes(
+            x = pos,
+            y = correlation,
+            color = pval,
+        )
+    ) + 
+    theme(text = element_text(size =25)) +
+    cowplot::theme_cowplot() +
+    geom_point() + 
+    geom_label_repel(
+        data = filter(snp_flow_combinations_with_cor_pval_pos,
+                      correlation > 0.01,
+                      pval < 0.05),
+        mapping = aes(
+            x = pos,
+            y = correlation,
+            label = snp),
+        size = 6) +
+    facet_grid(rows = vars(phenotype))
+```
+
+```{r }
+snp_flow_combinations_with_cor_pval_pos %>%
+    filter(correlation > 0.01) %>%
+    ggplot(
+        aes(
+            x = pos,
+            y = pval,
+            color = correlation,
+        )
+    ) + 
+    theme(text = element_text(size =25)) +
+    cowplot::theme_cowplot() +
+    geom_point() + 
+    geom_label_repel(
+        data = filter(snp_flow_combinations_with_cor_pval_pos,
+                      correlation > 0.01,
+                      pval < 0.05),
+        mapping = aes(
+            x = pos,
+            y = pval,
+            label = snp),
+        size = 6) +
+    facet_grid(rows = vars(phenotype))
+```
+
+```{r}
+snp_flow_combinations_with_cor_pval_pos %>%
+    filter(correlation < -0.01) %>%
+    ggplot(
+        aes(
+            x = pos,
+            y = correlation,
+            color = pval,
+        )
+    ) + 
+    theme(text = element_text(size =25)) +
+    cowplot::theme_cowplot() +
+    geom_point() + 
+    geom_label_repel(
+        data = filter(snp_flow_combinations_with_cor_pval_pos,
+                      correlation < -0.01,
+                      pval < 0.05),
+        mapping = aes(
+            x = pos,
+            y = correlation,
+            label = snp),
+        size = 6) +
+    facet_grid(rows = vars(phenotype))
+```
+
+```{r}
+snp_flow_combinations_with_cor_pval_pos %>%
+    filter(correlation < -0.01) %>%
+    ggplot(
+        aes(
+            x = pos,
+            y = pval,
+            color = correlation,
+        )
+    ) + 
+    theme(text = element_text(size =25)) +
+    cowplot::theme_cowplot() +
+    geom_point() + 
+    geom_label_repel(
+        data = filter(snp_flow_combinations_with_cor_pval_pos,
+                      correlation < -0.01,
+                      pval < 0.05),
+        mapping = aes(
+            x = pos,
+            y = pval,
+            label = snp),
+        size = 6) +
+    facet_grid(rows = vars(phenotype))
+```
